@@ -4,9 +4,8 @@ export const getCheckLists = async () => {
   try {
     const response = await request.get('v1/checkList');
 
-    return response;
+    return response.data;
   } catch (error) {
-    console.log({ error });
     return null;
   }
 };
@@ -15,9 +14,8 @@ export const getCheckList = async ({ id }) => {
   try {
     const response = await request.get(`v1/checkList/${id}`);
 
-    return response;
+    return response.data;
   } catch (error) {
-    console.log({ error });
     return null;
   }
 };

@@ -21,6 +21,9 @@ module.exports = {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'react/function-component-definition': [2, { namedComponents: 'arrow-function' }],
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'react/prop-types': 'off',
+    'dot-notation': 'off',
+    'import/prefer-default-export': 'off',
   },
   globals: {
     __DEV__: true,

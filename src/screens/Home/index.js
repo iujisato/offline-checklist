@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
-import { getCheckLists } from '../../services/checkListApi';
+import React, { useContext } from 'react';
+import { Text } from 'react-native';
+import { CheckListContext } from '../../contexts/checklist';
+import { Container } from './index.styles';
 
 const Home = () => {
-  const [lists, setLists] = useState([]);
-
-  const getData = async () => {
-    const data = await getCheckLists();
-
-    console.log({ data });
-
-    setLists(data);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
+  const { allCheckLists } = useContext(CheckListContext);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
+    <Container>
+      {allCheckLists.map((checkList) => (
+        <Text>{checkList['_id']}</Text>
+      ))}
+    </Container>
   );
 };
 
