@@ -4,7 +4,6 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { Container, ButtonWrapper } from './index.styles';
 import { CheckListContext } from '../../../contexts/checklist';
 import { displayDate } from '../../../utils/date';
-import Text from '../../../components/Common/Text';
 import Button from '../../../components/Common/Button';
 import ActionCard from '../../../components/Common/ActionCard';
 import Header from '../../../components/Common/Header';
@@ -13,14 +12,16 @@ import DataRow from '../../../components/Common/DataRow';
 
 const Dashboard = () => {
   const navigation = useNavigation();
-  const { allCheckLists, loading, syncValuesFromApi, syncValuesToApi } = useContext(CheckListContext);
+  const {
+    allCheckLists, loading, syncValuesFromApi,
+  } = useContext(CheckListContext);
 
   const goToDetails = (item) => { navigation.navigate('Details', { id: item['_id'] }); };
 
   useFocusEffect(
     useCallback(() => {
       syncValuesFromApi();
-    }, [])
+    }, []),
   );
 
   if (loading) {

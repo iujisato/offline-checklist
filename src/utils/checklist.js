@@ -31,7 +31,7 @@ export const normalizeDataToForm = (data) => ({
   type: data.type,
 });
 
-export const normalizeDataFromForm = ({ data, changeUpdatedAt }) => {
+export const normalizeDataFromForm = ({ data, changeUpdatedAt, location }) => {
   const normalizedData = {
     number_of_cows_head: Number(data.amountOfCows),
     amount_of_milk_produced: data.amountOfMilk,
@@ -48,6 +48,10 @@ export const normalizeDataFromForm = ({ data, changeUpdatedAt }) => {
     },
     type: data.type.key,
     updated_at: new Date(),
+    location: {
+      longitude: location.longitude,
+      latitude: location.latitude,
+    },
   };
 
   return changeUpdatedAt ? normalizedData : omit(normalizedData, 'updated_at');

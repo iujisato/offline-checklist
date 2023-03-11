@@ -1,7 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
+import Geolocation from '@react-native-community/geolocation';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigation } from '@react-navigation/native';
 import { CheckListContext } from '../../../contexts/checklist';
+import { AppContext } from '../../../contexts/app';
 import { integerRegex, floatRegex } from '../../../utils/validation';
 import { normalizeDataFromForm } from '../../../utils/checklist';
 import TextInput from '../../../components/Common/TextInput';
@@ -14,16 +16,23 @@ import { SYNC_TYPES, CHECKLIST_TYPES } from '../constants';
 
 const Create = () => {
   const navigation = useNavigation();
+  const { location, setLocation } = useContext(AppContext);
   const { storeValues, syncValuesToApi } = useContext(CheckListContext);
   const { control, handleSubmit, formState: { errors, isValid } } = useForm({
     defaultValues: {
       hadSupervision: false,
       type: { label: CHECKLIST_TYPES.BPA, key: CHECKLIST_TYPES.BPA },
+      // location: { longitude, latitude },
     },
   });
 
   const onSubmit = async (data) => {
-    const normalizedData = normalizeDataFromForm({ data });
+    const { longitude, latitude } = location.coords || {};
+
+    const normalizedData = normalizeDataFromForm({
+      data,
+      location: { longitude, latitude },
+    });
 
     try {
       await storeValues({ data: normalizedData, synced: SYNC_TYPES.PENDING_CREATE });
@@ -33,6 +42,14 @@ const Create = () => {
       console.log({ error });
     }
   };
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      (position) => setLocation(position),
+      (error) => console.log({ error }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
+  }, []);
 
   return (
     <Container>
