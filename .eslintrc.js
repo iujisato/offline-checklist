@@ -24,6 +24,7 @@ module.exports = {
     'react/prop-types': 'off',
     'dot-notation': 'off',
     'import/prefer-default-export': 'off',
+    'react/jsx-props-no-spreading': 'off',
   },
   globals: {
     __DEV__: true,

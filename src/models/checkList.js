@@ -1,4 +1,4 @@
-import { Realm } from '@realm/react';
+import { timeNowUnix } from '../utils/date';
 
 export const FarmerSchema = {
   name: 'Farmer',
@@ -29,26 +29,25 @@ export const LocationSchema = {
   name: 'Location',
   embedded: true,
   properties: {
-    latitude: 'float',
-    longitude: 'float',
+    latitude: { type: 'float', default: () => 0 },
+    longitude: { type: 'float', default: () => 0 },
   },
 };
 export const CheckListSchema = {
   name: 'CheckList',
   primaryKey: '_id',
   properties: {
-    _id: { type: 'string', default: () => new Realm.BSON.UUID() },
+    _id: { type: 'string', default: () => String(timeNowUnix()) },
     type: 'string',
-    amount_of_milk_produced: 'string',
+    amount_of_milk_produced: 'float',
     farmer: 'Farmer',
     from: 'From',
     to: 'To',
     number_of_cows_head: 'int',
     had_supervision: 'bool',
-    location: 'Location',
-    createdAt: { type: 'date', default: () => new Date() },
-    updatedAt: { type: 'date', default: () => new Date() },
-    __v: { type: 'int', default: 0 },
-    _synced: { type: 'bool', default: false },
+    location: { type: 'Location', default: () => ({ latitude: 0, longitude: 0 }) },
+    created_at: { type: 'date', default: () => new Date() },
+    updated_at: { type: 'date', default: () => new Date() },
+    _synced: { type: 'int', default: 0 },
   },
 };
