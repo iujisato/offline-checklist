@@ -24,10 +24,15 @@ const Update = () => {
   const onSubmit = async (data) => {
     const normalizedData = normalizeDataFromForm({ data, changeUpdatedAt: true });
     const mergedData = merge(checkList, normalizedData);
+    const isPendingCreation = mergedData['_synced'] === SYNC_TYPES.PENDING_CREATE;
 
     try {
-      await storeValues({ data: mergedData, synced: SYNC_TYPES.PENDING_UPDATE });
+      await storeValues({
+        data: mergedData,
+        synced: isPendingCreation ? SYNC_TYPES.PENDING_CREATE : SYNC_TYPES.PENDING_UPDATE,
+      });
       await syncValuesToApi();
+
       navigation.navigate('Dashboard');
     } catch (error) {
       console.log({ error });

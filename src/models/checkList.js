@@ -48,6 +48,6 @@ export const CheckListSchema = {
     location: { type: 'Location', default: () => ({ latitude: 0, longitude: 0 }) },
     created_at: { type: 'date', default: () => new Date() },
     updated_at: { type: 'date', default: () => new Date() },
-    _synced: { type: 'int', default: 0 },
+    _synced: { type: 'int', default: 2 },
   },
 };

@@ -1,6 +1,7 @@
 import React, {
-  createContext, useState, useMemo, useEffect,
+  createContext, useState, useMemo, useEffect, useContext,
 } from 'react';
+import { AppContext } from './app';
 import { getCheckLists, createCheckList, updateCheckList } from '../services/checkListApi';
 import { useDatabase, useQuery } from './database';
 import { normalizeData, normalizeDataToApi } from '../utils/checklist';
@@ -10,11 +11,11 @@ import { SYNC_TYPES } from '../screens/CheckList/constants';
 export const CheckListContext = createContext({
   loading: false,
   checkLists: [],
-  storeValues: () => {},
 });
 
 export const CheckListProvider = ({ children }) => {
   const db = useDatabase();
+  const { offline } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const allCheckLists = useQuery('CheckList').sorted('created_at', true);
   const syncedCheckLists = useMemo(() => allCheckLists.filtered('_synced = 0'), [allCheckLists]);
@@ -57,39 +58,48 @@ export const CheckListProvider = ({ children }) => {
   };
 
   const syncValuesFromApi = async () => {
+    if (offline) {
+      return;
+    }
+
     setLoading(true);
-    const apiData = await getCheckLists();
 
-    const apiIds = apiData.map((data) => String(data['_id']));
-    const databaseIds = syncedCheckLists.map((data) => data['_id']);
-    const removeIds = difference(databaseIds, apiIds).map((id) => String(id));
+    try {
+      const apiData = await getCheckLists();
 
-    await deleteValues({ data: removeIds, synced: SYNC_TYPES.SYNCED });
-    await storeValues({ data: apiData, synced: SYNC_TYPES.SYNCED });
+      const apiIds = apiData.map((data) => String(data['_id']));
+      const databaseIds = syncedCheckLists.map((data) => data['_id']);
+      const removeIds = difference(databaseIds, apiIds).map((id) => String(id));
+
+      await deleteValues({ data: removeIds, synced: SYNC_TYPES.SYNCED });
+      await storeValues({ data: apiData, synced: SYNC_TYPES.SYNCED });
+    } catch (error) {
+      console.log({ error });
+    }
 
     setLoading(false);
   };
 
   const syncValuesToApi = async () => {
+    if (offline) {
+      return;
+    }
+
     setLoading(true);
 
-    const createData = unsyncedCheckLists.filtered(`_synced = ${SYNC_TYPES.PENDING_CREATE}`).toJSON();
-    const updateData = unsyncedCheckLists.filtered(`_synced = ${SYNC_TYPES.PENDING_UPDATE}`).toJSON();
+    try {
+      const createData = unsyncedCheckLists.filtered(`_synced = ${SYNC_TYPES.PENDING_CREATE}`).toJSON();
+      const updateData = unsyncedCheckLists.filtered(`_synced = ${SYNC_TYPES.PENDING_UPDATE}`).toJSON();
 
-    if (!isEmpty(createData)) {
-      try {
+      if (!isEmpty(createData)) {
         const res = await createCheckList({ data: normalizeDataToApi(createData) });
 
         if (res) {
           await storeValues({ data: createData, synced: SYNC_TYPES.SYNCED });
         }
-      } catch (error) {
-        console.log({ error });
       }
-    }
 
-    if (!isEmpty(updateData)) {
-      try {
+      if (!isEmpty(updateData)) {
         normalizeDataToApi(updateData).forEach(async (data) => {
           const res = await updateCheckList({ data });
 
@@ -97,9 +107,9 @@ export const CheckListProvider = ({ children }) => {
             await storeValues({ data: updateData, synced: SYNC_TYPES.SYNCED });
           }
         });
-      } catch (error) {
-        console.log({ error });
       }
+    } catch (error) {
+      console.log({ error });
     }
 
     setLoading(false);
@@ -130,7 +140,7 @@ export const CheckListProvider = ({ children }) => {
   useEffect(() => {
     syncValuesFromApi();
     syncValuesToApi();
-  }, []);
+  }, [offline]);
 
   return (
     <CheckListContext.Provider value={value}>

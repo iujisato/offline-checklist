@@ -1,20 +1,28 @@
-import React, { createContext, useState, useMemo } from 'react';
+import React, {
+  createContext, useState, useMemo, useEffect,
+} from 'react';
+import NetInfo from '@react-native-community/netinfo';
 
-export const AppContext = createContext({
-  loading: false,
-  setLoading: () => {},
-});
+export const AppContext = createContext({});
 
 export const AppProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
+  const [offline, setOffline] = useState(false);
 
   const value = useMemo(() => ({
-    loading,
-    setLoading,
+    offline,
   }), [
-    loading,
-    setLoading,
+    offline,
   ]);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((networkState) => {
+      setOffline(!networkState.isInternetReachable);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   return (
     <AppContext.Provider value={value}>
