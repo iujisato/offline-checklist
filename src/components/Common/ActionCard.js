@@ -5,17 +5,17 @@ import {
 } from './ActionCard.styles';
 
 const ActionCard = ({ children, onPress }) => (
-  <Container>
-    <ContentWrapper>
-      {children}
-    </ContentWrapper>
+  <TouchableOpacity onPress={onPress}>
+    <Container>
+      <ContentWrapper>
+        {children}
+      </ContentWrapper>
 
-    <ActionWrapper>
-      <TouchableOpacity onPress={onPress}>
+      <ActionWrapper>
         <ChevronIcon />
-      </TouchableOpacity>
-    </ActionWrapper>
-  </Container>
+      </ActionWrapper>
+    </Container>
+  </TouchableOpacity>
 );
 
 export default ActionCard;

@@ -9,18 +9,28 @@ export const pallete = {
   LIGHT_RED: '#EA9999',
   LIGHT_GRAY: '#b2b2b2',
   DARK_GRAY: '#595959',
+  OFF_WHITE: '#FFF6DD',
+  NAVY_PURPLE: '#311463',
+  ICON_RED: '#FF6A5E',
+  LIGHT_ICON_RED: '#ff786e',
+  OFF_BLACK: '#2f2f2f',
+  ICON_BLUE: '#34B6D0',
 };
 
 export const colors = {
   // components
   BACKGROUND: pallete.EGGSHELL,
   PRIMARY_TEXT: pallete.ROSY_BROWN_4,
-  SECONDARY_BACKGROUND: pallete.TAN,
-  ICON_PRIMARY: pallete.ROSY_BROWN_4,
+  SECONDARY_BACKGROUND: pallete.OFF_WHITE,
+  ICON_PRIMARY: pallete.ICON_RED,
   ERROR: pallete.RED,
   ERROR_BACKGROUND: pallete.LIGHT_RED,
   DISABLED_BACKGROUND: pallete.LIGHT_GRAY,
-  DISABLED_TEXT: pallete.DARK_GRAY,
+  DISABLED_TEXT: pallete.OFF_BLACK,
+  BUTTON_ACTIVE_BACKGROUND: pallete.ICON_RED,
+  BUTTON_ACTIVE_TEXT: pallete.OFF_WHITE,
+  SCREEN_TITLE: pallete.NAVY_PURPLE,
+  LOADING: pallete.ICON_RED,
 };
 
 export const fontSizes = {

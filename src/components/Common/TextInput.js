@@ -13,7 +13,7 @@ const TextInput = (props) => {
         <Input error={error} {...inputProps} />
       </InputWrapper>
 
-      {error && <ErrorText variant="h5" color="error">{error}</ErrorText>}
+      {error && <ErrorText variant="h5" $color="error">{error}</ErrorText>}
     </Container>
   );
 };

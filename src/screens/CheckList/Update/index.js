@@ -9,6 +9,7 @@ import TextInput from '../../../components/Common/TextInput';
 import Button from '../../../components/Common/Button';
 import { Container, ScrollContainer } from './index.styles';
 import { SYNC_TYPES } from '../constants';
+import Header from '../../../components/Common/Header';
 
 const Update = () => {
   const route = useRoute();
@@ -41,6 +42,7 @@ const Update = () => {
 
   return (
     <Container>
+      <Header title="Edit Checklist" showBackArrow />
       <ScrollContainer>
         <Controller
           control={control}

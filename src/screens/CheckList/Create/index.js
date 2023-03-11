@@ -8,7 +8,8 @@ import TextInput from '../../../components/Common/TextInput';
 import CheckBox from '../../../components/Common/CheckBox';
 import Button from '../../../components/Common/Button';
 import Picker from '../../../components/Common/Picker';
-import { Container, ScrollContainer } from './index.styles';
+import Header from '../../../components/Common/Header';
+import { Container, ScrollContainer, ButtonWrapper } from './index.styles';
 import { SYNC_TYPES, CHECKLIST_TYPES } from '../constants';
 
 const Create = () => {
@@ -35,6 +36,7 @@ const Create = () => {
 
   return (
     <Container>
+      <Header title="New Checklist" showBackArrow />
       <ScrollContainer>
         <Controller
           control={control}
@@ -186,7 +188,9 @@ const Create = () => {
         />
       </ScrollContainer>
 
-      <Button disabled={!isValid} title="Create CheckList" onPress={handleSubmit(onSubmit)} />
+      <ButtonWrapper>
+        <Button disabled={!isValid} title="Create CheckList" onPress={handleSubmit(onSubmit)} />
+      </ButtonWrapper>
     </Container>
   );
 };

@@ -5,7 +5,7 @@ import { colors, paddings, margins } from '../../utils/standards';
 
 export const Container = styled.View((props) => `
   backgroundColor: ${colors[props.color] || colors.SECONDARY_BACKGROUND};
-  padding: ${paddings[props.variant?.toUpperCase()] || paddings.H4};
+  padding: ${paddings[props.variant?.toUpperCase()] || paddings.H1};
   borderRadius: 6px;
   marginVertical: ${margins.H4};
   flexDirection : row;
@@ -24,9 +24,3 @@ export const ChevronIcon = styled(ChevronRight).attrs(() => ({
 }))`
   color: ${colors.ICON_PRIMARY};
 `;
-export default {
-  Container,
-  ContentWrapper,
-  ActionWrapper,
-  ChevronIcon,
-};

@@ -1,9 +1,11 @@
 import styled from 'styled-components/native';
-import { fontSizes, colors } from '../../utils/standards';
+import { fontSizes, colors, margins } from '../../utils/standards';
 
 export const Text = styled.Text((props) => `
   fontSize: ${fontSizes[props.variant?.toUpperCase()] || fontSizes.H4};
-  color: ${colors[props.color?.toUpperCase()] || colors.PRIMARY_TEXT};
+  lineHeight: ${props.$lineHeight};
+  color: ${colors[props.$color?.toUpperCase()] || colors.PRIMARY_TEXT};
+  marginRight: ${margins[props.$margin?.toUpperCase()] || '0px'};
 `);
 
 export default {
